@@ -3,7 +3,7 @@ import { generateItinerary } from './services/ai';
 import type { UserPreferences, DayPlan, TripData } from './types';
 import ItineraryDisplay from './components/ItineraryDisplay';
 import Loader from './components/Loader';
-import { Map, Calendar, Sparkles, Trash2, History, MapPin } from 'lucide-react';
+import { Map, Sparkles, Trash2, MapPin } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid'; // npm install uuid && npm i --save-dev @types/uuid
 
 function App() {
@@ -79,121 +79,62 @@ function App() {
     localStorage.setItem('trip_history', JSON.stringify(updated));
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50 text-gray-800 font-sans selection:bg-primary selection:text-white pb-20">
-      
-      {/* Header */}
-      <header className="bg-white border-b sticky top-0 z-50 bg-opacity-80 backdrop-blur-md">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center text-white font-bold">
-              <Map size={20} />
-            </div>
-            <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-              TripGenie
-            </h1>
-          </div>
-        </div>
-      </header>
+ // Edit bagian return di App.tsx
+return (
+  <div className="min-h-screen bg-[#f8fafc] text-gray-800 font-sans selection:bg-indigo-500 selection:text-white pb-20">
+    
+    {/* Hero Background Decoration */}
+    <div className="absolute top-0 left-0 w-full h-[40vh] bg-gradient-to-br from-indigo-600 to-purple-700 -z-10 clip-path-slant" 
+         style={{ clipPath: 'polygon(0 0, 100% 0, 100% 85%, 0 100%)' }}>
+    </div>
 
-      <main className="max-w-5xl mx-auto px-4 py-8 grid md:grid-cols-3 gap-8">
-        
-        {/* Left Column: Form */}
-        <div className="md:col-span-1 space-y-6">
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-              <Sparkles className="text-yellow-500" size={18} /> Plan Your Trip
+    {/* Header */}
+    <header className="bg-transparent py-6">
+      <div className="max-w-5xl mx-auto px-4 flex items-center justify-between">
+        <div className="flex items-center gap-3 group cursor-pointer">
+          <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg group-hover:rotate-12 transition-transform">
+            <Map className="text-indigo-600" size={24} />
+          </div>
+          <h1 className="text-2xl font-black text-white tracking-tight">
+            TripGenie<span className="text-indigo-200">.ai</span>
+          </h1>
+        </div>
+      </div>
+    </header>
+
+    <main className="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-12 gap-8">
+      
+      {/* Left Column: Form (Stick to top when scroll) */}
+      <div className="md:col-span-4 lg:col-span-3">
+        <div className="sticky top-24 space-y-6">
+          <div className="bg-white p-6 rounded-3xl shadow-xl shadow-indigo-100/50 border border-gray-100">
+            <h2 className="text-lg font-bold mb-5 flex items-center gap-2">
+              <Sparkles className="text-indigo-500" size={20} /> Build Your Trip
             </h2>
             
+            {/* ... form kamu tetap sama, tapi ganti warna 'primary' ke 'indigo-600' ... */}
             <form onSubmit={handleGenerate} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Destination</label>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-3 text-gray-400" size={18} />
-                  <input 
-                    type="text" 
-                    required
-                    placeholder="Bali, Japan, Paris..." 
-                    className="w-full pl-10 pr-4 py-2 rounded-xl border focus:ring-2 focus:ring-primary focus:border-primary outline-none transition"
-                    value={destination}
-                    onChange={(e) => setDestination(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Days</label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-3 text-gray-400" size={18} />
-                    <input 
-                      type="number" 
-                      min="1" max="14"
-                      className="w-full pl-10 pr-4 py-2 rounded-xl border focus:ring-2 focus:ring-primary outline-none"
-                      value={days}
-                      onChange={(e) => setDays(parseInt(e.target.value))}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Budget</label>
-                  <select 
-                    className="w-full px-3 py-2 rounded-xl border focus:ring-2 focus:ring-primary outline-none appearance-none bg-white"
-                    value={budget}
-                    onChange={(e) => setBudget(e.target.value as any)}
-                  >
-                    <option value="Budget">💰 Cheap</option>
-                    <option value="Moderate">⚖️ Moderate</option>
-                    <option value="Luxury">💎 Luxury</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Interests (Optional)</label>
-                <input 
-                  type="text" 
-                  placeholder="Food, Nature, Art..." 
-                  className="w-full px-4 py-2 rounded-xl border focus:ring-2 focus:ring-primary outline-none"
-                  value={interests}
-                  onChange={(e) => setInterests(e.target.value)}
-                />
-              </div>
-
-              <button 
+               {/* (Input fields tetap, cukup pastikan fokus ring nya indigo) */}
+               <button 
                 type="submit" 
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white font-bold py-3 rounded-xl transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed shadow-md flex justify-center items-center gap-2"
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-2xl transition-all shadow-lg shadow-indigo-200 active:scale-[0.98] flex justify-center items-center gap-2"
               >
-                {loading ? 'Generating...' : <>Generate Itinerary <Sparkles size={18} /></>}
+                {loading ? 'Magic is happening...' : 'Generate Plan'}
               </button>
             </form>
           </div>
 
-          {/* History Section */}
+          {/* History - Dibuat lebih slim */}
           {history.length > 0 && (
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-              <h3 className="text-md font-bold mb-4 flex items-center gap-2 text-gray-700">
-                <History size={18} /> Saved Trips
-              </h3>
-              <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2">
+            <div className="bg-white/70 backdrop-blur-md p-5 rounded-3xl border border-white shadow-sm">
+              <h3 className="text-sm font-bold mb-3 uppercase tracking-wider text-gray-400">Recent Explorations</h3>
+              <div className="space-y-2 max-h-[250px] overflow-y-auto overflow-x-hidden">
                 {history.map((trip) => (
-                  <div 
-                    key={trip.id} 
-                    onClick={() => loadFromHistory(trip)}
-                    className="p-3 rounded-lg border border-gray-100 hover:border-primary/30 hover:bg-primary/5 cursor-pointer transition group relative"
-                  >
-                    <div className="font-bold text-gray-800">{trip.destination}</div>
-                    <div className="text-xs text-gray-500 mt-1 flex gap-2">
-                      <span>{trip.preferences.days} Days</span>
-                      <span>•</span>
-                      <span>{trip.preferences.budget}</span>
-                    </div>
-                    <button 
-                      onClick={(e) => deleteHistory(trip.id, e)}
-                      className="absolute right-2 top-3 text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition"
-                    >
-                      <Trash2 size={16} />
+                  <div key={trip.id} onClick={() => loadFromHistory(trip)} className="p-3 rounded-xl bg-white hover:shadow-md transition cursor-pointer border border-transparent hover:border-indigo-100 group flex justify-between items-center">
+                    <span className="font-medium truncate text-sm">{trip.destination}</span>
+                    <button onClick={(e) => deleteHistory(trip.id, e)} className="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition">
+                      <Trash2 size={14} />
                     </button>
                   </div>
                 ))}
@@ -201,32 +142,45 @@ function App() {
             </div>
           )}
         </div>
+      </div>
 
-        {/* Right Column: Result */}
-        <div className="md:col-span-2">
-          {loading ? (
+      {/* Right Column: Result */}
+      <div className="md:col-span-8 lg:col-span-9">
+        {loading ? (
+          <div className="bg-white rounded-[2rem] p-12 shadow-sm flex flex-col items-center border border-gray-100">
             <Loader />
-          ) : itinerary ? (
-            <div>
-              <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-6 mb-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">Trip to {destination}</h2>
-                <p className="text-gray-600">
-                  Here is your custom {days}-day itinerary based on a {budget} budget.
-                </p>
+          </div>
+        ) : itinerary ? (
+          <div className="animate-in fade-in duration-700">
+            <div className="relative h-64 rounded-[2rem] overflow-hidden mb-8 shadow-2xl">
+              <img 
+                src={`https://source.unsplash.com/featured/?${destination},travel`} 
+                className="w-full h-full object-cover" 
+                alt={destination}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8">
+                <span className="text-indigo-300 font-bold uppercase tracking-[0.2em] text-sm mb-2">Itinerary Ready</span>
+                <h2 className="text-4xl font-black text-white">Adventure in {destination}</h2>
               </div>
-              <ItineraryDisplay plans={itinerary} />
             </div>
-          ) : (
-            <div className="h-full flex flex-col items-center justify-center text-gray-400 min-h-[400px] border-2 border-dashed border-gray-200 rounded-3xl bg-gray-50/50">
-              <Map size={48} className="mb-4 opacity-20" />
-              <p>Enter your destination to start planning!</p>
+            <ItineraryDisplay plans={itinerary} />
+          </div>
+        ) : (
+          /* Empty State yang lebih cantik */
+          <div className="bg-white/50 backdrop-blur-sm rounded-[2rem] border-2 border-dashed border-gray-200 h-[500px] flex flex-col items-center justify-center text-center p-8">
+            <div className="w-24 h-24 bg-indigo-50 rounded-full flex items-center justify-center mb-6">
+              <MapPin className="text-indigo-300" size={40} />
             </div>
-          )}
-        </div>
-
-      </main>
-    </div>
-  );
+            <h3 className="text-2xl font-bold text-gray-700">Where to next?</h3>
+            <p className="text-gray-500 max-w-sm mt-2">
+              Input your dream destination and let our AI craft the perfect travel experience just for you.
+            </p>
+          </div>
+        )}
+      </div>
+    </main>
+  </div>
+);
 }
 
 export default App;
