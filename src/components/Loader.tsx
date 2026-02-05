@@ -6,7 +6,6 @@ export default function Loader() {
       <div className="animate-bounce">
         <Plane className="w-12 h-12 text-primary" />
       </div>
-      <p className="text-gray-500 animate-pulse font-medium">Meracik liburan impianmu...</p>
     </div>
   );
 }

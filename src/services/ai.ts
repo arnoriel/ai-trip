@@ -21,9 +21,9 @@ export const generateItinerary = async (prefs: UserPreferences): Promise<DayPlan
         "day": 1,
         "theme": "Arrival and City Exploration",
         "activities": [
-          { "time": "Morning", "activity": "Name of place", "description": "Short details", "estimatedCost": "$10" },
-          { "time": "Afternoon", "activity": "...", "description": "...", "estimatedCost": "..." },
-          { "time": "Evening", "activity": "...", "description": "...", "estimatedCost": "..." }
+          { "time": "Morning", "activity": "Name of place", "imageKeyword": "landscape landmark name", "description": "Short details", "estimatedCost": "$10" },
+          { "time": "Afternoon", "activity": "...", "imageKeyword": "landscape landmark name", "description": "...", "estimatedCost": "..." },
+          { "time": "Evening", "activity": "...", "imageKeyword": "landscape landmark name", "description": "...", "estimatedCost": "..." }
         ]
       }
     ]
